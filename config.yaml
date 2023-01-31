@@ -1,0 +1,3 @@
+app:
+  port: 30001
+  env: local
