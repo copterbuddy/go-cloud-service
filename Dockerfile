@@ -1,15 +1,19 @@
-# syntax=docker/dockerfile:1
+FROM golang:1.19-alpine as build-base
 
-FROM golang:1.18.4-alpine
+WORKDIR /app
 
-WORKDIR /src
+COPY go.mod .
 
-COPY . .
-RUN go mod tidy
 RUN go mod download
 
-COPY . ./
+COPY . .
 
-RUN go build -o main .
+RUN CGO_ENABLED=0 go test --tags=unit -v ./...
 
-CMD [ "./main" ]
+RUN go build -o ./out/go-app .
+
+FROM alpine:3.16.2
+COPY --from=build-base /app/out/go-app /app/go-app
+COPY config.yaml .
+
+CMD ["/app/go-app"]
