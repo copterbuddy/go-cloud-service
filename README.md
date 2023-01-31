@@ -1,2 +1,2 @@
-# go_viper
-project for test viper
+# go-cloud-service
+project for test go-cloud-service

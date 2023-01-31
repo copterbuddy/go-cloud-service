@@ -12,10 +12,14 @@ import (
 func main() {
 	initConfig()
 
+	r := setupRouter()
+	r.Run(fmt.Sprintf(":%v", viper.GetString("app.port")))
+}
+
+func setupRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/", Greeting)
-
-	r.Run(fmt.Sprintf(":%v", viper.GetString("app.port")))
+	return r
 }
 
 func initConfig() {
